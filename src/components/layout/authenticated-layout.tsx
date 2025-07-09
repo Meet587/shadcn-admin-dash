@@ -1,18 +1,23 @@
 import { AppSidebar } from '@/components/layout/app-sidebar';
 import SkipToMain from '@/components/skip-to-main';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import { SearchProvider } from '@/context/search-context';
+// import { SearchProvider } from '@/context/search-context';
 import { cn } from '@/lib/utils';
+import { Search } from 'lucide-react';
 import { Outlet } from 'react-router';
+import { ProfileDropdown } from '../profile-dropdown';
+import { ThemeSwitch } from '../theme-switch';
+import { Header } from './header';
+import { TopNav } from './top-nav';
 
 interface Props {
   children?: React.ReactNode;
 }
 
 export function AuthenticatedLayout({ children }: Props) {
-  const defaultOpen = false;
+  const defaultOpen = true;
   return (
-    <SearchProvider>
+    <div>
       <SidebarProvider defaultOpen={defaultOpen}>
         <SkipToMain />
         <AppSidebar />
@@ -28,9 +33,45 @@ export function AuthenticatedLayout({ children }: Props) {
             'has-[main.fixed-main]:group-data-[scroll-locked=1]/body:h-svh',
           )}
         >
+          {/* ===== Top Heading ===== */}
+          <Header>
+            <TopNav links={topNav} />
+            <div className="ml-auto flex items-center space-x-4">
+              <Search />
+              <ThemeSwitch />
+              <ProfileDropdown />
+            </div>
+          </Header>
           {children ? children : <Outlet />}
         </div>
       </SidebarProvider>
-    </SearchProvider>
+    </div>
   );
 }
+
+const topNav = [
+  {
+    title: 'Overview',
+    href: 'dashboard/overview',
+    isActive: true,
+    disabled: false,
+  },
+  {
+    title: 'Customers',
+    href: 'dashboard/customers',
+    isActive: false,
+    disabled: true,
+  },
+  {
+    title: 'Products',
+    href: 'dashboard/products',
+    isActive: false,
+    disabled: true,
+  },
+  {
+    title: 'Settings',
+    href: 'dashboard/settings',
+    isActive: false,
+    disabled: true,
+  },
+];

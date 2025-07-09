@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { IconMenu } from '@tabler/icons-react';
+import { Menu } from 'lucide-react';
 import { Link } from 'react-router';
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -25,7 +25,7 @@ export function TopNav({ className, links, ...props }: TopNavProps) {
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button size="icon" variant="outline">
-              <IconMenu />
+              <Menu />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="start">

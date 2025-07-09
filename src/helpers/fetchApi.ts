@@ -21,7 +21,7 @@ axiosBase.interceptors.request.use(async (config) => {
 // Add response interceptor to save cache
 axiosBase.interceptors.response.use(
   (response) => {
-    return response.data;
+    return response;
   },
   (error: AxiosError) => {
     const originalRequest = error.config;
