@@ -13,31 +13,34 @@ import {
 } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'sonner';
 import TopLoadingBar from '../../../../components/top-loading-bar';
-import ProjectRepository, {
-  IProject,
-} from '../../../../repositories/project.action';
-import { _setProjectList } from '../../../../store/projects/action';
+import PropertyRepository, {
+  IProperty,
+} from '../../../../repositories/property.action';
+import { _setPropertyList } from '../../../../store/property/action';
 import { columns } from './columns';
 import { DataTableToolbar } from './data-table-toolbar';
 
-const ProjectsTable = () => {
-  const [projectsList, setProjectsList] = useState<IProject[]>([]);
+const PropertyTable = () => {
+  const [propertyList, setPropertyList] = useState<IProperty[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  
   useEffect(() => {
-    fetchProjects();
+    fetchProperties();
   }, []);
 
-  const fetchProjects = async () => {
+  const fetchProperties = async () => {
     try {
       setIsLoading(true);
-      const response = await ProjectRepository.fetchProjectList();
-      setProjectsList(response);
-      dispatch(_setProjectList(response));
+      const response = await PropertyRepository.fetchPropertyList();
+      setPropertyList(response);
+      dispatch(_setPropertyList(response));
     } catch (error) {
       console.log(error);
+      toast.error('Failed to fetch properties', {
+        description: 'Please try again later',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -48,7 +51,7 @@ const ProjectsTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
-    data: projectsList,
+    data: propertyList,
     columns,
     state: {
       sorting,
@@ -85,4 +88,4 @@ const ProjectsTable = () => {
   );
 };
 
-export default ProjectsTable;
+export default PropertyTable;

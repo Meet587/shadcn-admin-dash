@@ -1,7 +1,3 @@
-import type {
-  AddPropertyReqInterface,
-  PropertyInterface,
-} from '../enums/property';
 import { axiosBase } from '../helpers/fetchApi';
 import { IDeal } from './deals.action';
 import { ILead } from './lead.action';
@@ -9,13 +5,14 @@ import { IProject } from './project.action';
 
 export type PropertyListResType = {
   url: string;
-  property: PropertyInterface[];
+  property: IProperty[];
 };
 
 export default class PropertyRepository {
-  static fetchPropertyList = async () => {
+  static fetchPropertyList = async (): Promise<IProperty[]> => {
     try {
-      return await axiosBase.get('/property-management');
+      const response = await axiosBase.get('/property-management');
+      return response.data;
     } catch (error) {
       throw error;
     }
@@ -29,7 +26,7 @@ export default class PropertyRepository {
     }
   };
 
-  static addNewProperty = async (data: AddPropertyReqInterface) => {
+  static addNewProperty = async (data: ICreateProperty) => {
     try {
       return await axiosBase.post('/property-management', data);
     } catch (error) {
@@ -37,13 +34,26 @@ export default class PropertyRepository {
     }
   };
 
-  static updateProperty = async (id: string, data: AddPropertyReqInterface) => {
+  static updateProperty = async (id: string, data: ICreateProperty) => {
     try {
       return await axiosBase.put(`/property-management/${id}`, data);
     } catch (error) {
       throw error;
     }
   };
+}
+
+export interface ICreateProperty {
+  project_id: string;
+  property_number?: string;
+  size?: number;
+  size_unit?: SizeUnitEnum;
+  bedrooms?: number;
+  bathrooms?: number;
+  floor_number?: number;
+  price: number;
+  status: PropertyStatusEnum;
+  property_type: PropertyTypeEnum;
 }
 
 export interface IProperty {
