@@ -1,6 +1,4 @@
 import { DataTable } from '@/components/data-table/data-table';
-import BuilderRepository, { IBuilder } from '@/repositories/builders.action';
-import { _setDeveloperList } from '@/store/developer/action';
 import {
   ColumnFiltersState,
   getCoreRowModel,
@@ -14,25 +12,26 @@ import {
   VisibilityState,
 } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import TopLoadingBar from '../../../../components/top-loading-bar';
+import ProjectRepository, {
+  IProject,
+} from '../../../../repositories/project.action';
 import { columns } from './columns';
 import { DataTableToolbar } from './data-table-toolbar';
 
-const DeveloperTable = () => {
-  const [developerList, setDeveloperList] = useState<IBuilder[]>([]);
+const ProjectsTable = () => {
+  const [projectsList, setProjectsList] = useState<IProject[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
+
   useEffect(() => {
-    fetchDevelopers();
+    fetchProjects();
   }, []);
 
-  const fetchDevelopers = async () => {
+  const fetchProjects = async () => {
     try {
       setIsLoading(true);
-      const response = await BuilderRepository.fetchBuilderList();
-      setDeveloperList(response);
-      dispatch(_setDeveloperList(response));
+      const response = await ProjectRepository.fetchProjectList();
+      setProjectsList(response);
     } catch (error) {
       console.log(error);
     } finally {
@@ -45,7 +44,7 @@ const DeveloperTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
-    data: developerList,
+    data: projectsList,
     columns,
     state: {
       sorting,
@@ -82,4 +81,4 @@ const DeveloperTable = () => {
   );
 };
 
-export default DeveloperTable;
+export default ProjectsTable;
