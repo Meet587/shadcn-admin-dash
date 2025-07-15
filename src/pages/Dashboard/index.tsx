@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Main } from '../../components/layout/main';
 import { Button } from '../../components/ui/button';
 import {
@@ -13,8 +15,25 @@ import {
   TabsList,
   TabsTrigger,
 } from '../../components/ui/tabs';
+import BuilderRepository from '../../repositories/builders.action';
+import { _setCitiesList } from '../../store/city/action';
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchCities();
+  }, []);
+
+  const fetchCities = async () => {
+    try {
+      const response = await BuilderRepository.fetchCities();
+      dispatch(_setCitiesList(response));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   return (
     <>
       {/* ===== Main ===== */}

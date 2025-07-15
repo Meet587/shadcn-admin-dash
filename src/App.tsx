@@ -1,23 +1,20 @@
-import { Suspense, useState } from 'react';
+import { FontProvider } from '@/context/font-context';
+import { ThemeProvider } from '@/context/theme-context';
+import { Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { Route, Routes } from 'react-router';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import { AuthenticatedLayout } from './components/layout/authenticated-layout';
 import Loading from './components/Loading';
+import { Toaster } from './components/ui/sonner';
 import NotFoundError from './pages/Errors/not-found-error';
 import { ProtectedRoutes, PublicRoutes } from './router';
 import { store } from './store/store';
-import { FontProvider } from '@/context/font-context';
-import { ThemeProvider } from '@/context/theme-context';
 
 function App() {
-  const [mode] = useState<'light' | 'dark'>('light');
-
   return (
     <Provider store={store}>
-      <ThemeProvider defaultTheme={mode} storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <FontProvider>
           {/* <RouterProvider router={router} /> */}
           <Routes>
@@ -52,18 +49,7 @@ function App() {
               }
             />
           </Routes>
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme={mode}
-          />
+          <Toaster duration={5000} richColors />
         </FontProvider>
       </ThemeProvider>
     </Provider>

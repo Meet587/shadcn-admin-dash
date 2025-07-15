@@ -1,5 +1,5 @@
 import axios, { type AxiosError } from 'axios';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URI;
 if (!apiUrl) {

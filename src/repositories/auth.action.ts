@@ -1,9 +1,13 @@
 import type { LoginReqInterface, RegisterReqInterface } from '../enums/auth';
 import { axiosBase } from '../helpers/fetchApi';
 
-class AuthRepository {
+export default class AuthRepository {
   static login = async (data: LoginReqInterface) => {
-    return await axiosBase.post('/auth/login', data);
+    try {
+      return await axiosBase.post('/auth/login', data);
+    } catch (error) {
+      throw error;
+    }
   };
 
   static register = async (data: RegisterReqInterface) => {
@@ -16,5 +20,3 @@ class AuthRepository {
     });
   };
 }
-
-export default AuthRepository;
