@@ -5,7 +5,8 @@ import { ILead, ILeadActivity } from './lead.action';
 export default class UserRepository {
   static fetchUserList = async () => {
     try {
-      return await axiosBase.get('/user/get-all-users');
+      const response = await axiosBase.get('/users/get-all-users');
+      return response.data;
     } catch (error) {
       throw error;
     }
@@ -22,7 +23,6 @@ export enum UserRoleEnum {
 export interface IUser {
   id: string;
   email: string;
-  password_hash: string;
   first_name: string | null;
   last_name: string | null;
   phone: string | null;

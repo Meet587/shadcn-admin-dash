@@ -4,6 +4,7 @@ import counterReducer from './counter/reducer';
 import developerReducer from './developer/reducer';
 import projectReducer from './projects/reducer';
 import propertyReducer from './property/reducer';
+import userReducer from './users/reducer';
 
 // Combine Reducers
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   developer: developerReducer,
   project: projectReducer,
   property: propertyReducer,
+  user: userReducer,
   // Add other reducers here if you have more
 });
 
