@@ -3,43 +3,22 @@ import { IDeal } from './deals.action';
 import { ILead } from './lead.action';
 import { IProject } from './project.action';
 
-export type PropertyListResType = {
-  url: string;
-  property: IProperty[];
-};
-
 export default class PropertyRepository {
   static fetchPropertyList = async (): Promise<IProperty[]> => {
-    try {
-      const response = await axiosBase.get('/property-management');
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await axiosBase.get('/property-management');
+    return response.data;
   };
 
   static fetchPropertyById = async (id: string) => {
-    try {
-      return await axiosBase.get(`/property-management/${id}`);
-    } catch (error) {
-      throw error;
-    }
+    return await axiosBase.get(`/property-management/${id}`);
   };
 
   static addNewProperty = async (data: ICreateProperty) => {
-    try {
-      return await axiosBase.post('/property-management', data);
-    } catch (error) {
-      throw error;
-    }
+    return await axiosBase.post('/property-management', data);
   };
 
   static updateProperty = async (id: string, data: ICreateProperty) => {
-    try {
-      return await axiosBase.put(`/property-management/${id}`, data);
-    } catch (error) {
-      throw error;
-    }
+    return await axiosBase.put(`/property-management/${id}`, data);
   };
 }
 

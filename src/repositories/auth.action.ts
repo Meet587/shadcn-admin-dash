@@ -3,11 +3,7 @@ import { axiosBase } from '../helpers/fetchApi';
 
 export default class AuthRepository {
   static login = async (data: LoginReqInterface) => {
-    try {
-      return await axiosBase.post('/auth/login', data);
-    } catch (error) {
-      throw error;
-    }
+    return await axiosBase.post('/auth/login', data);
   };
 
   static register = async (data: RegisterReqInterface) => {

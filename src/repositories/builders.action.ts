@@ -21,48 +21,32 @@ export interface AddBuilderContactPersonReqInterface {
 
 export default class BuilderRepository {
   static fetchBuilderList = async (): Promise<IBuilder[]> => {
-    try {
-      const response = await axiosBase.get('/builder');
-      return response.data;
-    } catch (error: any) {
-      throw error;
-    }
+    const response = await axiosBase.get('/builder');
+    return response.data;
   };
 
   static addNewBuilder = async (
     data: AddBuilderReqInterface,
   ): Promise<IBuilder> => {
-    try {
-      return await axiosBase.post('/builder', data);
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.post('/builder', data);
   };
 
   static fetchBuilderById = async (
     id: string,
     fetchContactPersons: boolean = false,
   ): Promise<IBuilder> => {
-    try {
-      return await axiosBase.get(`/builder/${id}`, {
-        params: {
-          include_contact_persons: fetchContactPersons,
-        },
-      });
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.get(`/builder/${id}`, {
+      params: {
+        include_contact_persons: fetchContactPersons,
+      },
+    });
   };
 
   static addBuilderContactPerson = async (
     id: string,
     data: AddBuilderContactPersonReqInterface,
   ) => {
-    try {
-      return await axiosBase.post(`/builder/${id}/contact`, data);
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.post(`/builder/${id}/contact`, data);
   };
 }
 

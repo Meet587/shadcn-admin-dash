@@ -60,9 +60,9 @@ export function PrimaryButtons() {
       toast.success('Developer added successfully');
       form.reset();
       setIsOpen(false);
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Failed to add developer', {
-        description: error,
+        description: error as string,
       });
     }
   };

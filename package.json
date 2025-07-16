@@ -1,13 +1,14 @@
 {
   "name": "crm-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "knip": "knip"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -33,7 +34,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "date-fns": "^4.1.0",
     "lucide-react": "^0.525.0",
     "next-themes": "^0.4.6",
     "react": "^19.1.0",
@@ -58,6 +58,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "knip": "^5.61.3",
     "tw-animate-css": "^1.3.5",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",

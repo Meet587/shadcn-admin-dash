@@ -7,43 +7,23 @@ import { IUser } from './users.action';
 
 export default class DealRepository {
   static fetchDealsList = async () => {
-    try {
-      return await axiosBase.get('/deal');
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.get('/deal');
   };
 
   static fetchDealById = async (id: string) => {
-    try {
-      return await axiosBase.get(`/deal/${id}`);
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.get(`/deal/${id}`);
   };
 
   static addNewDeal = async (data: AddDealReqInterface) => {
-    try {
-      return await axiosBase.post('/deal', data);
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.post('/deal', data);
   };
 
   static updateDeal = async (id: string, data: AddDealReqInterface) => {
-    try {
-      return await axiosBase.put(`/deal/${id}`, data);
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.put(`/deal/${id}`, data);
   };
 
   static deleteDeal = async (id: string) => {
-    try {
-      return await axiosBase.delete(`/deal/${id}`);
-    } catch (error: any) {
-      throw error;
-    }
+    return await axiosBase.delete(`/deal/${id}`);
   };
 }
 

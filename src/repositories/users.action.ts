@@ -4,12 +4,8 @@ import { ILead, ILeadActivity } from './lead.action';
 
 export default class UserRepository {
   static fetchUserList = async () => {
-    try {
-      const response = await axiosBase.get('/users/get-all-users');
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await axiosBase.get('/users/get-all-users');
+    return response.data;
   };
 }
 

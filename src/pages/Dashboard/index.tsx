@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'sonner';
 import { Main } from '../../components/layout/main';
 import { Button } from '../../components/ui/button';
 import {
@@ -25,14 +26,14 @@ const Dashboard = () => {
     fetchLocations();
   }, []);
 
-  const fetchLocations = async () => {
+  const fetchLocations = useCallback(async () => {
     try {
       const response = await LocationRepository.fetchLocations();
       dispatch(_setLocationsList(response));
     } catch (error) {
-      console.log(error);
+      toast.error(error as string);
     }
-  };
+  }, [dispatch]);
 
   return (
     <>

@@ -48,9 +48,9 @@ export function PrimaryButtons() {
       toast.success('Location added successfully');
       form.reset();
       setIsOpen(false);
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Failed to add location', {
-        description: error,
+        description: error as string,
       });
     }
   };

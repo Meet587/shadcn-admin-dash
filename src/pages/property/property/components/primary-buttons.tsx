@@ -64,9 +64,9 @@ export function PrimaryButtons() {
       const res = await PropertyRepository.addNewProperty(values);
       console.log(res);
       toast.success('Property added successfully');
-    } catch (error: any) {
+    } catch (error) {
       toast.error('Failed to add property', {
-        description: error,
+        description: error as string,
       });
     }
   };

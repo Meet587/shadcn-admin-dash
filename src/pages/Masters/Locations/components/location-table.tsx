@@ -11,7 +11,7 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import TopLoadingBar from '../../../../components/top-loading-bar';
@@ -30,7 +30,7 @@ const LocationTable = () => {
     fetchProperties();
   }, []);
 
-  const fetchProperties = async () => {
+  const fetchProperties = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await LocationRepository.fetchLocations();
@@ -44,7 +44,7 @@ const LocationTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
