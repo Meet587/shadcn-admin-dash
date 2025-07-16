@@ -14,9 +14,9 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-import TopLoadingBar from '../../../components/top-loading-bar';
-import UserRepository, { IUser } from '../../../repositories/users.action';
-import { _setUserList } from '../../../store/users/action';
+import TopLoadingBar from '../../../../components/top-loading-bar';
+import UserRepository, { IUser } from '../../../../repositories/users.action';
+import { _setUserList } from '../../../../store/users/action';
 import { columns } from './columns';
 
 const UserTable = () => {

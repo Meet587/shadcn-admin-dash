@@ -34,7 +34,7 @@ export function TopNav({ className, links, ...props }: TopNavProps) {
                 <Link
                   to={href}
                   className={!isActive ? 'text-muted-foreground' : ''}
-                  // disabled={disabled}
+                  // disabled={disabled ? true : false}
                 >
                   {title}
                 </Link>

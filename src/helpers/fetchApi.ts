@@ -25,8 +25,15 @@ axiosBase.interceptors.response.use(
   },
   (error: AxiosError) => {
     const originalRequest = error.config;
-    if (typeof (error.response?.data as any)?.message === 'object') {
-      return Promise.reject((error.response?.data as any)?.message.join(', '));
+    if (
+      typeof (error.response?.data as unknown as { message: string[] })
+        ?.message === 'object'
+    ) {
+      return Promise.reject(
+        (
+          error.response?.data as unknown as { message: string[] }
+        )?.message.join(', '),
+      );
     }
 
     // @ts-expect-error _retry is not define in originalRequest type

@@ -1,5 +1,6 @@
 import { axiosBase } from '../helpers/fetchApi';
 import { ICommission } from './commission.action';
+import { ILocation } from './locations.action';
 import { IProject } from './project.action';
 
 export interface AddBuilderReqInterface {
@@ -63,15 +64,6 @@ export default class BuilderRepository {
       throw error;
     }
   };
-
-  static fetchCities = async (): Promise<ICity[]> => {
-    try {
-      const response = await axiosBase.get('/city');
-      return response.data;
-    } catch (error: any) {
-      throw error;
-    }
-  };
 }
 
 export enum BuilderStatusEnum {
@@ -90,8 +82,8 @@ export interface IBuilder {
   status: BuilderStatusEnum;
   created_at: Date;
   updated_at: Date;
-  city?: ICity;
-  operating_cities?: ICity[];
+  city?: ILocation;
+  operating_cities?: ILocation[];
   contact_persons?: IBuilderContact[];
   projects?: IProject[];
   commissions?: ICommission[];
@@ -108,16 +100,4 @@ export interface IBuilderContact {
   created_at: Date;
   updated_at: Date;
   builder: IBuilder;
-}
-
-export interface ICity {
-  id: string;
-  name: string;
-  pincode: string;
-  state: string;
-  country: string;
-  created_at: Date;
-  updated_at: Date;
-  builders?: IBuilder[];
-  projects?: IProject[];
 }

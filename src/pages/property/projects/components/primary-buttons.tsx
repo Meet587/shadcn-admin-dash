@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { RootState } from '@/store/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusIcon } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
@@ -29,6 +30,7 @@ import ProjectRepository, {
 } from '../../../../repositories/project.action';
 
 export function PrimaryButtons() {
+  const [isOpen, setIsOpen] = useState(false);
   const addProjectSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     description: z.string().optional(),
@@ -61,6 +63,8 @@ export function PrimaryButtons() {
       const res = await ProjectRepository.addNewProject(values);
       console.log(res);
       toast.success('Project added successfully');
+      form.reset();
+      setIsOpen(false);
     } catch (error: any) {
       toast.error('Failed to add project', {
         description: error,
@@ -68,18 +72,22 @@ export function PrimaryButtons() {
     }
   };
 
-  const cities = useSelector((state: RootState) => state.city.cities);
+  const locations = useSelector((state: RootState) => state.locations.locations);
   const developers = useSelector(
     (state: RootState) => state.developer.developers,
   );
 
   return (
     <div className="flex gap-2">
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger
           className="flex items-center gap-2"
           role="button"
           asChild
+          onClick={() => {
+            form.reset();
+            setIsOpen(true);
+          }}
         >
           <Button>
             <span>Create</span> <PlusIcon size={18} />
@@ -155,9 +163,9 @@ export function PrimaryButtons() {
                           onValueChange={field.onChange}
                           placeholder="Select City"
                           className="col-span-4"
-                          items={cities.map((c) => ({
-                            label: c.name,
-                            value: c.id,
+                          items={locations.map((l) => ({
+                            label: l.name,
+                            value: l.id,
                           }))}
                         />
                         <FormMessage />

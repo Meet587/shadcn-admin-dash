@@ -1,4 +1,4 @@
-import { Main } from '../../components/layout/main';
+import { Main } from '../../../components/layout/main';
 import UserTable from './components/user-table';
 
 const Users = () => {
@@ -7,9 +7,6 @@ const Users = () => {
       <div className="mb-2 flex flex-wrap items-center justify-between space-y-2 gap-x-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Users</h2>
-          {/* <p className="text-muted-foreground">
-          Here&apos;s a list of your tasks for this month!
-        </p> */}
         </div>
         {/* <PrimaryButtons /> */}
       </div>

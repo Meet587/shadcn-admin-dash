@@ -15,25 +15,25 @@ import {
   TabsList,
   TabsTrigger,
 } from '../../components/ui/tabs';
-import BuilderRepository from '../../repositories/builders.action';
-import { _setCitiesList } from '../../store/city/action';
+import { LocationRepository } from '../../repositories/locations.action';
+import { _setLocationsList } from '../../store/locations/action';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchCities();
+    fetchLocations();
   }, []);
 
-  const fetchCities = async () => {
+  const fetchLocations = async () => {
     try {
-      const response = await BuilderRepository.fetchCities();
-      dispatch(_setCitiesList(response));
+      const response = await LocationRepository.fetchLocations();
+      dispatch(_setLocationsList(response));
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   return (
     <>
       {/* ===== Main ===== */}

@@ -118,7 +118,7 @@ export const columns: ColumnDef<ILead>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'actions',
+    accessorKey: 'id',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Actions" />
     ),

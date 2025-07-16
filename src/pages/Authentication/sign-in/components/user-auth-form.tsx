@@ -15,6 +15,7 @@ import { Facebook } from 'lucide-react';
 import { HTMLAttributes, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import AuthRepository from '../../../../repositories/auth.action';
 
@@ -49,14 +50,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      // eslint-disable-next-line no-console
       const res = await AuthRepository.login(data);
       localStorage.setItem('token', res.data.access_token);
       localStorage.setItem('id', res.data.id);
       localStorage.setItem('refreshToken', res.data.refresh_token);
       navigation('/dashboard');
     } catch (error) {
-      console.log(error);
+      toast.error(error as string);
     } finally {
       setTimeout(() => {
         setIsLoading(false);
