@@ -1,5 +1,6 @@
 import SignIn from '../pages/Authentication/sign-in';
 import Dashboard from '../pages/Dashboard';
+import Leads from '../pages/leads';
 import Developers from '../pages/property/developers';
 import Projects from '../pages/property/projects';
 import Property from '../pages/property/property';
@@ -16,6 +17,7 @@ const ProtectedRoutes: ProtectedRouteInterface[] = [
   { path: '/projects', component: <Projects /> },
   { path: '/property', component: <Property /> },
   { path: '/users', component: <Users /> },
+  { path: '/leads', component: <Leads /> },
 ];
 
 const PublicRoutes: ProtectedRouteInterface[] = [

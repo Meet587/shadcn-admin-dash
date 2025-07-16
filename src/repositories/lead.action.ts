@@ -1,3 +1,4 @@
+import { axiosBase } from '../helpers/fetchApi';
 import { IDeal } from './deals.action';
 import { IProperty } from './property.action';
 import { IUser } from './users.action';
@@ -48,8 +49,8 @@ export interface ILead {
   budget_max?: number;
   status: LeadStatusEnum;
   assigned_to?: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
   source: ILeadSource;
   interested_property?: IProperty;
   assigned_to_user?: IUser;
@@ -82,4 +83,11 @@ export interface ILeadActivity {
   updated_at: Date;
   lead: ILead;
   created_by_user: IUser;
+}
+
+export class LeadRepository {
+  static async fetchLeadsList() {
+    const response = await axiosBase.get('/leads');
+    return response.data;
+  }
 }

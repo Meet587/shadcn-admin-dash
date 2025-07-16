@@ -9,6 +9,7 @@ import {
   MessageCircle,
   Package,
   Users,
+  UserSearch,
 } from 'lucide-react';
 import { type SidebarData } from '../types';
 
@@ -43,6 +44,11 @@ export const sidebarData: SidebarData = {
           title: 'Dashboard',
           url: '/dashboard',
           icon: LayoutDashboardIcon,
+        },
+        {
+          title: 'Leads',
+          url: '/leads',
+          icon: UserSearch,
         },
         {
           title: 'Property',
