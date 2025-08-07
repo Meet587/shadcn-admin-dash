@@ -67,7 +67,9 @@ export function PrimaryButtons() {
     }
   };
 
-  const locations = useSelector((state: RootState) => state.locations.locations);
+  const locations = useSelector(
+    (state: RootState) => state.locations.locations,
+  );
 
   return (
     <div className="flex gap-2">
@@ -154,7 +156,7 @@ export function PrimaryButtons() {
                         className="col-span-4"
                         items={locations.map((l) => ({
                           label: l.name,
-                          value: l.id,
+                          value: l.id.toString(),
                         }))}
                       />
                       <FormMessage />

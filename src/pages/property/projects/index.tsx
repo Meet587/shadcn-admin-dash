@@ -1,8 +1,25 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Main } from '../../../components/layout/main';
+import ProjectRepository from '../../../repositories/project.action';
+import { _setAmenities } from '../../../store/projects/action';
 import { PrimaryButtons } from './components/primary-buttons';
 import ProjectsTable from './components/project-table';
 
 const Projects = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    fetchAmenities();
+  }, []);
+
+  const fetchAmenities = async () => {
+    try {
+      const res = await ProjectRepository.fetchAmenities();
+      dispatch(_setAmenities(res));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Main>

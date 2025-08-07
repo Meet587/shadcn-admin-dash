@@ -1,7 +1,7 @@
 import { axiosBase } from '../helpers/fetchApi';
 
 export interface ILocation {
-  id: string;
+  id: number;
   name: string;
   pincode: string;
   state: string;

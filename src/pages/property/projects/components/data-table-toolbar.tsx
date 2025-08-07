@@ -1,10 +1,11 @@
 import { DataTableViewOptions } from '@/components/data-table/data-table-view-options';
 import { Button } from '@/components/ui/button';
 import { Table } from '@tanstack/react-table';
-import { CircleCheck, CircleX, X } from 'lucide-react';
-import { DataTableFacetedFilter } from '../../../../components/data-table/data-table-faceted-filter';
+// import { CircleCheck, CircleX, X } from 'lucide-react';
+// import { DataTableFacetedFilter } from '../../../../components/data-table/data-table-faceted-filter';
+// import { ProjectStatusEnum } from '../../../../repositories/project.action';
 import { Input } from '../../../../components/ui/input';
-import { ProjectStatusEnum } from '../../../../repositories/project.action';
+import { X } from 'lucide-react';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -26,7 +27,7 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        <div className="flex gap-x-2">
+        {/* <div className="flex gap-x-2">
           {table.getColumn('status') && (
             <DataTableFacetedFilter
               column={table.getColumn('status')}
@@ -50,7 +51,7 @@ export function DataTableToolbar<TData>({
               ]}
             />
           )}
-        </div>
+        </div> */}
         {isFiltered && (
           <Button
             variant="ghost"
