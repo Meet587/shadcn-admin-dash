@@ -200,10 +200,7 @@ const AddEditProject = () => {
 
       let res;
       if (id) {
-        res = await ProjectRepository.updateProject(
-          (id),
-          projectData as any,
-        );
+        res = await ProjectRepository.updateProject(id, projectData as any);
         toast.success('Project updated successfully');
       } else {
         res = await ProjectRepository.addNewProject(projectData as any);
@@ -516,7 +513,9 @@ const AddEditProject = () => {
                   name="reraNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>RERA Number</FormLabel>
+                      <FormLabel>
+                        RERA Number <span className="text-red-500">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Enter RERA number" />
                       </FormControl>
@@ -530,7 +529,9 @@ const AddEditProject = () => {
                   name="gstNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>GST Number</FormLabel>
+                      <FormLabel>
+                        GST Number <span className="text-red-500">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Enter GST number" />
                       </FormControl>
