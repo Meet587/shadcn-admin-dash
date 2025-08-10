@@ -1,7 +1,7 @@
-import { IAmenity, IProject } from '../../repositories/project.action';
+import { IAmenity, IPaginatedProjectList } from '../../repositories/project.action';
 import { SET_AMENITIES, SET_PROJECT_LIST } from './actionType';
 
-export const _setProjectList = (projects: IProject[]) => {
+export const _setProjectList = (projects: IPaginatedProjectList) => {
   return {
     type: SET_PROJECT_LIST,
     payload: projects,

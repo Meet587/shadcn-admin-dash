@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import ProjectRepository, { IProject } from '@/repositories/project.action';
+import ProjectRepository, { IProjectList } from '@/repositories/project.action';
 import { RootState } from '@/store/store';
 import { ColumnDef } from '@tanstack/react-table';
 import { EyeIcon, PencilIcon, TrashIcon } from 'lucide-react';
@@ -24,14 +24,14 @@ const ActionsCell = ({
   project,
   onRefresh,
 }: {
-  project: IProject;
+  project: IProjectList;
   onRefresh: () => Promise<void>;
 }) => {
   const navigate = useNavigate();
 
   const handleDelete = async () => {
     try {
-      await ProjectRepository.deleteProject(project.id);
+      await ProjectRepository.deleteProject(project.id.toString());
       toast.success('Project deleted successfully');
       // Refresh table data after successful deletion
       await onRefresh();
@@ -85,42 +85,18 @@ const ActionsCell = ({
   );
 };
 
-// Developer cell component
-const DeveloperCell = ({ builderId }: { builderId: number }) => {
-  const developers = useSelector(
-    (state: RootState) => state.developer.developers,
-  );
-
-  // Handle loading state while builders data is being fetched
-  if (developers.length === 0) {
-    return (
-      <div className="min-w-[100px] flex items-center">
-        <div className="h-4 w-20 bg-muted rounded animate-pulse" />
-      </div>
-    );
-  }
-
-  // Find the builder by ID (convert builderId to string for comparison)
-  const builder = developers.find((d) => d.id === builderId.toString());
-
-  // Add fallback display for missing or unknown builders
-  if (!builder) {
-    return (
-      <div className="min-w-[100px] text-muted-foreground">
-        Unknown Developer
-      </div>
-    );
-  }
-
-  return <div className="min-w-[100px]">{builder.name}</div>;
-};
-
 // Location cell component
-const LocationCell = ({ cityIds }: { cityIds: string[] }) => {
+const LocationCell = ({
+  cityIds,
+}: {
+  cityIds: {
+    id: number;
+    name: string;
+  }[];
+}) => {
   const locationsArray = useSelector(
     (state: RootState) => state.locations.locations,
   );
-
   // Handle empty or invalid city IDs gracefully
   if (!cityIds || cityIds.length === 0) {
     return (
@@ -139,13 +115,8 @@ const LocationCell = ({ cityIds }: { cityIds: string[] }) => {
     );
   }
 
-  // Resolve city_id array to city names using Redux store
-  const resolvedCities = locationsArray.filter((location) =>
-    cityIds.includes(location.id.toString()),
-  );
-
   // Handle case where no cities are found
-  if (resolvedCities.length === 0) {
+  if (cityIds.length === 0) {
     return (
       <div className="min-w-[120px] text-muted-foreground">
         Cities not found
@@ -154,7 +125,7 @@ const LocationCell = ({ cityIds }: { cityIds: string[] }) => {
   }
 
   // Format multiple cities as comma-separated list with truncation for long lists
-  const cityNames = resolvedCities.map((city) => city.name);
+  const cityNames = cityIds.map((city) => city.name);
 
   // Show first 2 cities, then "+ X more" if more than 2
   if (cityNames.length <= 2) {
@@ -172,7 +143,7 @@ const LocationCell = ({ cityIds }: { cityIds: string[] }) => {
 
 export const createColumns = (
   onRefresh: () => Promise<void>,
-): ColumnDef<IProject>[] => [
+): ColumnDef<IProjectList>[] => [
   {
     id: 'row_number',
     header: ({ column }) => (
@@ -200,11 +171,13 @@ export const createColumns = (
     enableHiding: false,
   },
   {
-    accessorKey: 'builder_id',
+    accessorKey: 'builder.id',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Developer" />
     ),
-    cell: ({ row }) => <DeveloperCell builderId={row.original.builder_id} />,
+    cell: ({ row }) => (
+      <div className="min-w-[100px]">{row.original.builder.name}</div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
@@ -213,47 +186,34 @@ export const createColumns = (
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Location" />
     ),
-    cell: ({ row }) => <LocationCell cityIds={row.original.city_id} />,
+    cell: ({ row }) => {
+      return <LocationCell cityIds={row.original.cities} />;
+    },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'construction_type',
+    accessorKey: 'property_types',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Property Type" />
     ),
     cell: ({ row }) => {
-      const constructionType = row.getValue('construction_type') as string;
+      const propertyType = row.getValue('property_types') as string[];
 
       // Handle null/undefined values gracefully
-      if (!constructionType) {
+      if (!propertyType) {
         return (
           <div className="min-w-[80px] text-muted-foreground">
             Not specified
           </div>
         );
       }
-
       // Format text: capitalize and replace underscores with spaces
-      const formattedType = constructionType
-        .toLowerCase()
-        .split('_')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+      const formattedType = propertyType
+        .map((type) => type.toLowerCase().split('_').join(' '))
+        .join(', ');
 
       return <div className="min-w-[80px]">{formattedType}</div>;
-    },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'possession_year',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Launch Date" />
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.getValue('possession_year'));
-      return <div className="min-w-[80px]">{date.toLocaleDateString()}</div>;
     },
     enableSorting: false,
     enableHiding: false,
@@ -268,7 +228,7 @@ export const createColumns = (
       const possessionYear = row.original.possession_year;
 
       // Handle null values by displaying "TBD" or appropriate placeholder
-      if (!possessionMonth || !possessionYear) {
+      if (!possessionYear) {
         return <div className="min-w-[100px] text-muted-foreground">TBD</div>;
       }
 
@@ -289,7 +249,9 @@ export const createColumns = (
       ];
 
       // Format date as "Month Year" (e.g., "March 2025")
-      const monthName = monthNames[possessionMonth - 1]; // Month is 1-indexed
+      const monthName = possessionMonth
+        ? monthNames[possessionMonth - 1]
+        : monthNames[11];
       const formattedDate = `${monthName} ${possessionYear}`;
 
       return <div className="min-w-[100px]">{formattedDate}</div>;
@@ -310,7 +272,7 @@ export const createColumns = (
   },
 ];
 
-// Export the columns function for backward compatibility
+// Export the columns function with a no-op refresh function as fallback
 export const columns = createColumns(async () => {
-  window.location.reload();
+  console.log('Table refresh requested');
 });

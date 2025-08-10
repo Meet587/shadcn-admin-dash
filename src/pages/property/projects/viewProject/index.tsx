@@ -1,3 +1,4 @@
+import BackButton from '@/components/BackButton';
 import { Main } from '@/components/layout/main';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -91,10 +92,6 @@ const ViewProject = () => {
   }, [id]);
 
   // Helper functions to resolve data
-  const getBuilderInfo = (builderId: number): IBuilder | null => {
-    if (!builders || builders.length === 0) return null;
-    return builders.find((b) => b.id === builderId.toString()) || null;
-  };
 
   const getCityNames = (cityIds: string[]): string => {
     if (!cityIds || cityIds.length === 0) return 'Location not specified';
@@ -126,7 +123,7 @@ const ViewProject = () => {
   };
 
   const formatPossessionDate = (month: number | null, year: number): string => {
-    if (!month || !year) return 'TBD';
+    if (!year) return 'TBD';
 
     const months = [
       'January',
@@ -143,7 +140,7 @@ const ViewProject = () => {
       'December',
     ];
 
-    const monthName = months[month - 1];
+    const monthName = month ? months[month - 1] : months[11];
     return monthName ? `${monthName} ${year}` : 'TBD';
   };
 
@@ -248,22 +245,11 @@ const ViewProject = () => {
     <Main>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Button
-            onClick={() => navigate('/projects')}
-            variant="outline"
-            size="sm"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Projects
-          </Button>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              {project.name}
-            </h1>
-            <p className="text-muted-foreground">Project Details</p>
-          </div>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">{project.name}</h1>
+          <p className="text-muted-foreground">Project Details</p>
         </div>
+        <BackButton />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -324,7 +310,7 @@ const ViewProject = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             {(() => {
-              const builder = getBuilderInfo(project.builder_id);
+              const builder = project.builder;
               if (builder) {
                 return (
                   <>

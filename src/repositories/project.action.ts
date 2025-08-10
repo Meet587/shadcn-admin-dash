@@ -3,6 +3,28 @@ import { IBuilder } from './builders.action';
 import { ILocation } from './locations.action';
 import { IProperty } from './property.action';
 
+export enum PropertyTypeEnum {
+  RESIDENTIAL = 'RESIDENTIAL',
+  COMMERCIAL = 'COMMERCIAL',
+  LAND = 'LAND',
+}
+
+export enum PropertySubtypeEnum {
+  // Residential subtypes
+  APARTMENT_FLAT = 'APARTMENT_FLAT',
+  BUNGALOW_VILLA = 'BUNGALOW_VILLA',
+  ROW_HOUSE = 'ROW_HOUSE',
+
+  // Commercial subtypes
+  SHOP_SHOWROOM = 'SHOP_SHOWROOM',
+  OFFICE_SPACE = 'OFFICE_SPACE',
+  INDUSTRIAL_SHED = 'INDUSTRIAL_SHED',
+  WAREHOUSE = 'WAREHOUSE',
+
+  // Land subtypes
+  LAND_PLOT = 'LAND_PLOT',
+}
+
 export interface IProject1 {
   id: string;
   builder_id: string;
@@ -12,13 +34,27 @@ export interface IProject1 {
   launch_date?: string;
   city_id: string;
   possession_date?: string;
-  project_type: ProjectTypeEnum;
-  status: ProjectStatusEnum;
   created_at: Date;
   updated_at: Date;
   builder: IBuilder;
   city: Pick<ILocation, 'name' | 'id' | 'state'>;
   properties: IProperty[];
+}
+
+export interface IProjectList {
+  id: string | number;
+  name: string;
+  possession_month: number | null;
+  possession_year: number;
+  property_types: PropertySubtypeEnum[] | null;
+  builder: {
+    id: number;
+    name: string;
+  };
+  cities: {
+    id: number;
+    name: string;
+  }[];
 }
 
 export interface IProject {
@@ -44,6 +80,21 @@ export interface IProject {
   gst_number: string;
   created_at: Date;
   updated_at: Date;
+  builder: {
+    address: {
+      city_id: number;
+      address_line_1: string;
+      address_line_2: string;
+    };
+    created_at: Date;
+    email: string;
+    id: 15;
+    name: string;
+    phone: string;
+    status: string;
+    updated_at: Date;
+    website: string;
+  };
 }
 
 export interface IAddProject {
@@ -68,26 +119,52 @@ export interface IAddProject {
   builder_id: number;
 }
 
-export enum ProjectTypeEnum {
-  RESIDENTIAL = 'residential',
-  COMMERCIAL = 'commercial',
-  MIXED = 'mixed',
-}
-
-export enum ProjectStatusEnum {
-  UPCOMING = 'upcoming',
-  ONGOING = 'ongoing',
-  COMPLETED = 'completed',
-}
-
 export interface IAmenity {
   id: number;
   name: string;
 }
 
+export interface IProjectListFilters {
+  page?: number;
+  limit?: number;
+  name?: string;
+  is_ready_possession?: boolean;
+}
+
+export interface IPaginatedProjectList {
+  data: IProjectList[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export default class ProjectRepository {
-  static fetchProjectList = async (): Promise<IProject[]> => {
-    const response = await axiosBase.get('/project');
+  static fetchProjectList = async (
+    filters?: IProjectListFilters,
+  ): Promise<IPaginatedProjectList> => {
+    const params = new URLSearchParams();
+
+    if (filters?.page) {
+      params.append('page', filters.page.toString());
+    }
+    if (filters?.limit) {
+      params.append('limit', filters.limit.toString());
+    }
+    if (filters?.name) {
+      params.append('name', filters.name);
+    }
+    if (filters?.is_ready_possession !== undefined) {
+      params.append(
+        'is_ready_possession',
+        filters.is_ready_possession.toString(),
+      );
+    }
+
+    const queryString = params.toString();
+    const url = queryString ? `/project?${queryString}` : '/project';
+
+    const response = await axiosBase.get(url);
     return response.data;
   };
 

@@ -71,7 +71,9 @@ export function PrimaryButtons() {
     }
   };
 
-  const projects = useSelector((state: RootState) => state.project.projects);
+  const projects = useSelector(
+    (state: RootState) => state.project.projects.data,
+  );
 
   return (
     <div className="flex gap-2">
@@ -257,7 +259,7 @@ export function PrimaryButtons() {
                           className="col-span-4"
                           items={projects.map((project) => ({
                             label: project.name,
-                            value: project.id,
+                            value: project.id.toString(),
                           }))}
                         />
                       </FormControl>
