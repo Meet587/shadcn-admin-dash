@@ -1,11 +1,5 @@
 import { DataTable } from '@/components/data-table/data-table';
-import {
-  ColumnFiltersState,
-  getCoreRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState,
-} from '@tanstack/react-table';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'sonner';
@@ -49,7 +43,6 @@ const ProjectsTable = () => {
     is_ready_possession: undefined,
   });
 
-  // Get current state from Redux store
   const developers = useSelector(
     (state: RootState) => state.developer.developers,
   );
@@ -66,7 +59,6 @@ const ProjectsTable = () => {
           setIsLoading(true);
         }
 
-        // Fetch projects data
         const projectsData = await ProjectRepository.fetchProjectList(
           currentFilters,
         );
@@ -80,7 +72,6 @@ const ProjectsTable = () => {
         });
         dispatch(_setProjectList(projectsData));
 
-        // Fetch builders data if not already loaded
         if (developers.length === 0 && !buildersLoading) {
           setBuildersLoading(true);
           try {
@@ -142,19 +133,17 @@ const ProjectsTable = () => {
 
     if (filtersChanged) {
       fetchRequiredData(filters);
-      prevFiltersRef.current = { ...filters }; // Create a new object reference
+      prevFiltersRef.current = { ...filters };
     }
   }, [filters, fetchRequiredData]);
 
-  // Refresh table data by re-fetching with current filters
   const refreshTableData = useCallback(async () => {
     await fetchRequiredData(filters);
   }, [fetchRequiredData, filters]);
 
-  // Handle filter changes
   const handleFiltersChange = useCallback(
     (newFilters: Partial<IProjectListFilters>) => {
-      setFilters((prev) => ({ ...prev, ...newFilters, page: 1 })); // Reset to page 1 when filters change
+      setFilters((prev) => ({ ...prev, ...newFilters, page: 1 }));
     },
     [],
   );
@@ -163,11 +152,6 @@ const ProjectsTable = () => {
   const handlePaginationChange = useCallback((page: number, limit?: number) => {
     setFilters((prev) => ({ ...prev, page, ...(limit && { limit }) }));
   }, []);
-
-  const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
 
   // Memoize columns to prevent unnecessary re-renders
   const columns = useMemo(
@@ -179,21 +163,12 @@ const ProjectsTable = () => {
     data: projectsList,
     columns,
     state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
       pagination: {
         pageIndex: paginationInfo.page - 1,
         pageSize: paginationInfo.limit,
       },
     },
     getCoreRowModel: getCoreRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    onSortingChange: setSorting,
-    onRowSelectionChange: setRowSelection,
-    enableRowSelection: true,
     // Server-side pagination
     manualPagination: true,
     pageCount: paginationInfo.totalPages,
