@@ -8,6 +8,7 @@ import Developers from '../pages/property/developers';
 import Projects from '../pages/property/projects';
 import AddEditProject from '../pages/property/projects/addEditProject';
 import Property from '../pages/property/property';
+import ViewProperty from '@/pages/property/property/view-property';
 
 interface ProtectedRouteInterface {
   path: string;
@@ -22,6 +23,7 @@ const ProtectedRoutes: ProtectedRouteInterface[] = [
   { path: '/projects/edit/:id', component: <AddEditProject /> },
   { path: '/projects/view/:id', component: <ViewProject /> },
   { path: '/property', component: <Property /> },
+  { path: '/property/view/:id', component: <ViewProperty /> },
   { path: '/leads', component: <Leads /> },
   { path: '/masters/locations', component: <Locations /> },
   { path: '/masters/users', component: <Users /> },
