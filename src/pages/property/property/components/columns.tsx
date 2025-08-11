@@ -17,6 +17,7 @@ import { EyeIcon, PencilIcon, TrashIcon } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import LocationCell from '../../components/LocationCell';
+import { formatCurrency } from '@/lib/formetters';
 
 const ActionsCell = ({
   property,
@@ -107,7 +108,9 @@ export const createColumns = (
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      return <div className="min-w-[80px]">{row.getValue('title')}</div>;
+      return (
+        <div className="min-w-[80px] capitalize">{row.getValue('title')}</div>
+      );
     },
     enableSorting: false,
     enableHiding: false,
@@ -127,7 +130,9 @@ export const createColumns = (
           </div>
         );
       }
-      return <div className="min-w-[80px]">{propertyType}</div>;
+      return (
+        <div className="min-w-[80px]">{propertyType.replace('_', ' ')}</div>
+      );
     },
     enableSorting: false,
     enableHiding: false,
@@ -149,7 +154,19 @@ export const createColumns = (
       <DataTableColumnHeader column={column} title="Furnishing" />
     ),
     cell: ({ row }) => {
-      return <div className="w-[100px]">{row.getValue('furnishing')}</div>;
+      const furnishing = row.getValue('furnishing') as string;
+      if (!furnishing) {
+        return (
+          <div className="min-w-[80px] text-muted-foreground">
+            Not specified
+          </div>
+        );
+      }
+      return (
+        <div className="w-[100px] font-medium capitalize">
+          {furnishing.replace('_', ' ')}
+        </div>
+      );
     },
     enableSorting: false,
     enableHiding: false,
@@ -162,7 +179,7 @@ export const createColumns = (
     cell: ({ row }) => {
       return (
         <div className="min-w-[80px]">
-          {Number(row.original.pricing.total_amount).toFixed(0)}
+          {formatCurrency(row.original.pricing.total_amount)}
         </div>
       );
     },

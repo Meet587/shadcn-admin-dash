@@ -92,7 +92,7 @@ const PropertyTable = () => {
   }, [filters, fetchProperties]);
 
   const handlePaginationChange = useCallback((page: number, limit?: number) => {
-    setPaginationInfo((prev) => ({ ...prev, page, ...(limit && { limit }) }));
+    setFilters((prev) => ({ ...prev, page, ...(limit && { limit }) }));
   }, []);
 
   const handleFilterChange = useCallback(
@@ -140,11 +140,7 @@ const PropertyTable = () => {
       <TopLoadingBar loading={isLoading} />
       <DataTable
         columns={columns}
-        toolbar={
-          <DataTableToolbar
-            handleFilterChange={handleFilterChange}
-          />
-        }
+        toolbar={<DataTableToolbar handleFilterChange={handleFilterChange} />}
         table={table}
       />
     </div>
